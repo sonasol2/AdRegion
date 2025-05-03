@@ -1,9 +1,9 @@
-using AdRegion.Services;
+using AdvertisingRegionService.API.Services;
 using NUnit.Framework;
 
-namespace AdRegion.Tests;
+namespace AdvertisingRegionService.Tests;
 
-[TestFixture] // Это атрибут, который указывает, что это тестовый класс
+[TestFixture]
 public class AdRegionServiceTests
 {
     private AdRegionService _service;

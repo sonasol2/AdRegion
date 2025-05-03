@@ -1,7 +1,7 @@
-using AdRegion.Services.Interfaces;
+using AdvertisingRegionService.API.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AdRegion.Controllers;
+namespace AdvertisingRegionService.API.Controllers;
 
 [ApiController]
 public class AdPlatformsController : Controller
@@ -20,17 +20,17 @@ public class AdPlatformsController : Controller
     {
         if (file == null || file.Length == 0) return NotFound("File is undefined or empty");
         
-        string[] fileExtensions = new []{".txt" }; // можно добавить любые другие текстовые расширения при необходимости
+        string[] fileExtensions = new []{".txt" }; 
         var name = file.FileName;
 
         var lastIndexDot = name.LastIndexOf('.');
         var extension = name.Substring(lastIndexDot);
 
-        foreach (var ext in fileExtensions) // проверка на соответствие расширений
+        foreach (var ext in fileExtensions) 
             if (extension != ext) return BadRequest("File extension incorrect");
         
         
-        using var reader = new StreamReader(file.OpenReadStream()); // читаем файл 
+        using var reader = new StreamReader(file.OpenReadStream());
         var content = await reader.ReadToEndAsync();
         
         var result = _adRegionService.UploadFile(content); 

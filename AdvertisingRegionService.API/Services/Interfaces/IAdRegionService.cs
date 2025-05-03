@@ -1,6 +1,6 @@
-using AdRegion.Models;
+using AdvertisingRegionService.API.Models;
 
-namespace AdRegion.Services.Interfaces;
+namespace AdvertisingRegionService.API.Services.Interfaces;
 
 public interface IAdRegionService
 {

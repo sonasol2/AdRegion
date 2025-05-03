@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <RootNamespace>AdvertisingRegionService.API</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -19,8 +20,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <_ContentIncludedByDefault Remove="AdRegion.Tests\obj\AdRegion.Tests.csproj.nuget.dgspec.json" />
-      <_ContentIncludedByDefault Remove="AdRegion.Tests\obj\project.assets.json" />
+      <_ContentIncludedByDefault Remove="AdvertisingRegionService.Tests\obj\AdvertisingRegionService.Tests.csproj.nuget.dgspec.json" />
+      <_ContentIncludedByDefault Remove="AdvertisingRegionService.Tests\obj\project.assets.json" />
     </ItemGroup>
 
 </Project>

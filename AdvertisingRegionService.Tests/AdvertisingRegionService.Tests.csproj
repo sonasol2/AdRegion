@@ -4,11 +4,11 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>AdRegion.Tests</RootNamespace>
+        <RootNamespace>AdvertisingRegionService.Tests</RootNamespace>
     </PropertyGroup>
     
     <ItemGroup>
-        <ProjectReference Include="../AdRegion/AdRegion.csproj"/>
+        <ProjectReference Include="..\AdvertisingRegionService.API\AdvertisingRegionService.API.csproj" />
     </ItemGroup>
     
     <ItemGroup>

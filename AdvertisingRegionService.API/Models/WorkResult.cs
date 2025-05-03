@@ -1,4 +1,4 @@
-namespace AdRegion.Models;
+namespace AdvertisingRegionService.API.Models;
 
 public class WorkResult<T>
 {

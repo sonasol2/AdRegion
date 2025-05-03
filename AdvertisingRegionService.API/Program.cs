@@ -1,6 +1,5 @@
-using AdRegion.Controllers;
-using AdRegion.Services;
-using AdRegion.Services.Interfaces;
+using AdvertisingRegionService.API.Services;
+using AdvertisingRegionService.API.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
