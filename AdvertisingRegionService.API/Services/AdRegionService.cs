@@ -10,7 +10,6 @@ public class AdRegionService : IAdRegionService
     
     public WorkResult<bool> UploadFile(string fileContent)
     {
-        string? b = null;
         foreach (var line in fileContent.Split('\n'))
         {
             var parts = line.Split(':'); 
@@ -35,9 +34,6 @@ public class AdRegionService : IAdRegionService
 
     public WorkResult<List<string>> GetPlatformByLocation(string searchRequest) 
     {
-        if (string.IsNullOrWhiteSpace(searchRequest))
-            return WorkResult<List<string>>.Fail("Location cannot be empty");
-        
         return _cachedResults.ContainsKey(searchRequest) 
             ? WorkResult<List<string>>.Success(_cachedResults[searchRequest])
             : WorkResult<List<string>>.Success(new List<string>());
