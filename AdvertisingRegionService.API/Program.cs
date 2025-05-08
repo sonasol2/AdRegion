@@ -1,24 +1,12 @@
-using AdvertisingRegionService.API.Services;
-using AdvertisingRegionService.API.Services.Interfaces;
+using AdvertisingRegionService.API.Configurations;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddEndpointsApiExplorer();
-
-builder.Services.AddSwaggerGen();
-
-builder.Services.AddSingleton<IAdRegionService, AdRegionService>();
-builder.Services.AddControllers();
+builder.Services.ConfigureServices();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.MapControllers();
+app.ConfigureApplication();
 
 app.Run();
