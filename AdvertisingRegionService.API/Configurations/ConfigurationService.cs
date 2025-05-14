@@ -1,5 +1,8 @@
 using AdvertisingRegionService.API.Services;
 using AdvertisingRegionService.API.Services.Interfaces;
+using AdvertisingRegionService.API.Validators;
+using AdvertisingRegionService.Domain.Interfaces;
+using AdvertisingRegionService.Domain.Parsers;
 using FluentValidation;
 
 namespace AdvertisingRegionService.API.Configurations;
@@ -21,7 +24,8 @@ public static class ConfigurationService
 
     private static IServiceCollection AddBusinessServices(this IServiceCollection services)
     {
-        services.AddSingleton<IAdRegionService, AdRegionService>();
+        services.AddScoped<IAdRegionService, AdRegionService>();
+        services.AddSingleton<IAdRegionFileParser, AdRegionFileParser>();
         return services;
     }
 

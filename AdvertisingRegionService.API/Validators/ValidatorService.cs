@@ -2,7 +2,7 @@ using AdvertisingRegionService.API.Services.Interfaces;
 using FluentValidation;
 using FluentValidation.Results;
 
-namespace AdvertisingRegionService.API.Services;
+namespace AdvertisingRegionService.API.Validators;
 
 public class ValidatorService : IValidatorService
 {

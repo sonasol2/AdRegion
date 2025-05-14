@@ -24,10 +24,8 @@ public class AdPlatformsController : Controller
         var validatorResult = await _validatorService.ValidateAsync(request);
         if (!validatorResult.IsValid) return BadRequest(validatorResult.Errors);
         
-        using var reader = new StreamReader(request.OpenReadStream());
-        var content = await reader.ReadToEndAsync();
         
-        var result = _adRegionService.UploadFile(content); 
+        var result = await _adRegionService.UploadFile(request); 
         if (!result.IsSuccessfully)
             return BadRequest(result.Error);
         

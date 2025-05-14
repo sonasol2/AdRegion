@@ -12,9 +12,9 @@ public class SearchValidator : AbstractValidator<string>
             .WithMessage(Constants.EmptySearchStringMessage);
         
         RuleFor(s => s.Length)
-            .GreaterThan(Constants.MaxSearchLength)
+            .GreaterThan(0)
             .WithMessage(Constants.TooLongSearchStringMessage)
-            .LessThan(0)
+            .LessThan(Constants.MaxSearchLength)
             .WithMessage(Constants.TooShortSearchStringMessage);
     }
 }

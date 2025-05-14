@@ -27,4 +27,11 @@ public static class Constants
     public const string InvalidFileMessage = "Invalid file";
     
     public const string NullModelMessage = "Model is null";
+    
+    //parse
+    public const string PartsSplitter = ":";
+    public const string LineSplitter = "\n";
+    public const string RegionSplitter = ",";
+    public const int MaxAllowedPartsCount = 2;
+    public const string LastRegionIndex = "/";
 }

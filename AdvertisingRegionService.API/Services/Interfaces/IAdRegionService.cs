@@ -4,6 +4,6 @@ namespace AdvertisingRegionService.API.Services.Interfaces;
 
 public interface IAdRegionService
 {
-    WorkResult<bool> UploadFile(string parsedFile);
+    Task<WorkResult<bool>> UploadFile(IFormFile? file);
     WorkResult<List<string>> GetPlatformByLocation(string location);
 }
