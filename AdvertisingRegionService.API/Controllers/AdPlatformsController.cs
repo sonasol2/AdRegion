@@ -1,5 +1,6 @@
-using AdvertisingRegionService.API.Services.Interfaces;
+using AdvertisingRegionService.API.Interfaces;
 using AdvertisingRegionService.Domain;
+using AdvertisingRegionService.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdvertisingRegionService.API.Controllers;
@@ -45,7 +46,7 @@ public class AdPlatformsController : Controller
         if (!result.IsSuccessfully) return BadRequest(result.Error);
 
         if (result.Result.Count == 0)
-            return BadRequest("No content found");
+            return BadRequest(Constants.NotFoundMessage);
         
         return Ok(result.Result);
     }

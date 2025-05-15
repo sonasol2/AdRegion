@@ -1,8 +1,14 @@
-using AdvertisingRegionService.API.Services;
-using AdvertisingRegionService.API.Services.Interfaces;
+using AdvertisingRegionService.API.Interfaces;
 using AdvertisingRegionService.API.Validators;
+using AdvertisingRegionService.DAL;
+using AdvertisingRegionService.DAL.Configurations;
+using AdvertisingRegionService.DAL.Interfaces;
+using AdvertisingRegionService.DAL.Repositories;
+using AdvertisingRegionService.Domain;
 using AdvertisingRegionService.Domain.Interfaces;
+using AdvertisingRegionService.Domain.Models;
 using AdvertisingRegionService.Domain.Parsers;
+using AdvertisingRegionService.Domain.Services;
 using FluentValidation;
 
 namespace AdvertisingRegionService.API.Configurations;
@@ -13,11 +19,14 @@ public static class ConfigurationService
     {
         services.AddEndpointsApiExplorer();
 
+        services.AddSingleton<CacheContext>();
+        
         services.AddSwaggerGen();
         
         return services
             .AddValidators()
             .AddBusinessServices()
+            .AddRepositories()
             .AddControllersConfiguration();
     }
     

@@ -1,4 +1,4 @@
-using AdvertisingRegionService.API.Services.Interfaces;
+using AdvertisingRegionService.API.Interfaces;
 using FluentValidation;
 using FluentValidation.Results;
 

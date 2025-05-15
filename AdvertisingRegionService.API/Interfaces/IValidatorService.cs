@@ -1,6 +1,6 @@
 using FluentValidation.Results;
 
-namespace AdvertisingRegionService.API.Services.Interfaces;
+namespace AdvertisingRegionService.API.Interfaces;
 
 public interface IValidatorService
 {
