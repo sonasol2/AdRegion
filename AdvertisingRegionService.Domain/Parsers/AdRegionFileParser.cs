@@ -1,4 +1,6 @@
 using AdvertisingRegionService.Domain.Interfaces;
+using AdvertisingRegionService.Domain.Models;
+
 
 namespace AdvertisingRegionService.Domain.Parsers
 {
@@ -34,10 +36,10 @@ namespace AdvertisingRegionService.Domain.Parsers
             return platforms;
         }
 
-        public Dictionary<string, List<string>> BuildRegionHierarchy(Dictionary<string, List<string>> regionPlatforms)
+        public List<AdvertisingPlatform> BuildRegionHierarchy(Dictionary<string, List<string>> regionPlatforms)
         {
-            var result = new Dictionary<string, List<string>>();
-
+            var platforms = new List<AdvertisingPlatform>();
+            
             foreach (var region in regionPlatforms.Keys)
             {
                 var currentRegion = region;
@@ -51,13 +53,17 @@ namespace AdvertisingRegionService.Domain.Parsers
                     currentRegion = GetParentLocation(currentRegion);
                 }
                 
-                result[region] = platformsForLocation.Distinct().ToList();
+                platforms.Add(new AdvertisingPlatform()
+                {
+                    Region = region,
+                    Platforms = platformsForLocation.Distinct().ToList().ToHashSet()
+                });
             }
             
-            return result;
+            return platforms;
         }
 
-        public string GetParentLocation(string region)
+        private string GetParentLocation(string region)
         {
             var lastIndex = region.LastIndexOf(Constants.LastRegionIndex);
             return lastIndex > 0 ? region.Substring(0, lastIndex) : string.Empty;
