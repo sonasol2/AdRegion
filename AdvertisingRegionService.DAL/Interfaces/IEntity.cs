@@ -1,4 +1,4 @@
-namespace AdvertisingRegionService.Domain.Interfaces;
+namespace AdvertisingRegionService.DAL.Interfaces;
 
 public interface IEntity
 {

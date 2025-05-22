@@ -1,19 +1,19 @@
 using AdvertisingRegionService.API.Interfaces;
-using AdvertisingRegionService.Domain;
+using AdvertisingRegionService.Domain.Constants;
 using AdvertisingRegionService.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdvertisingRegionService.API.Controllers;
 
 [ApiController]
-public class AdPlatformsController : Controller
+public class AdvertisingPlatformsController : Controller
 {
-    private readonly IAdRegionService _adRegionService;
+    private readonly IAdvertisingRegionService _advertisingRegionService;
     private readonly IValidatorService _validatorService;
 
-    public AdPlatformsController(IAdRegionService adRegionService, IValidatorService validatorService)
+    public AdvertisingPlatformsController(IAdvertisingRegionService advertisingRegionService, IValidatorService validatorService)
     {
-        _adRegionService = adRegionService;
+        _advertisingRegionService = advertisingRegionService;
         _validatorService = validatorService;
     }
     
@@ -22,15 +22,16 @@ public class AdPlatformsController : Controller
     [Route("upload")]
     public async Task<IActionResult> UploadFile(IFormFile? request)
     {   
-        var validatorResult = await _validatorService.ValidateAsync(request);
-        if (!validatorResult.IsValid) return BadRequest(validatorResult.Errors);
+        // var validatorResult = await _validatorService.ValidateAsync(request);
+        // if (!validatorResult.IsValid) return BadRequest(validatorResult.Errors);
+
+        await using var stream = request.OpenReadStream();
         
-        
-        var result = await _adRegionService.UploadFile(request); 
+        var result = await _advertisingRegionService.UploadFile(stream); 
         if (!result.IsSuccessfully)
             return BadRequest(result.Error);
         
-        return Ok(Constants.SuccessMessage);
+        return Ok(LocalizationConstants.SuccessMessage);
     }
 
     
@@ -41,12 +42,12 @@ public class AdPlatformsController : Controller
         var validateResult = _validatorService.ValidateAsync(searchRequest);
         if(!validateResult.Result.IsValid) return BadRequest(validateResult.Result.Errors);
         
-        var result = _adRegionService.GetPlatformByLocation(searchRequest);
+        var result = _advertisingRegionService.GetPlatformByLocation(searchRequest);
         
         if (!result.IsSuccessfully) return BadRequest(result.Error);
 
         if (result.Result.Count == 0)
-            return BadRequest(Constants.NotFoundMessage);
+            return BadRequest(LocalizationConstants.NotFoundMessage);
         
         return Ok(result.Result);
     }

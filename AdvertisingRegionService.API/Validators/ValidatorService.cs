@@ -15,11 +15,9 @@ public class ValidatorService : IValidatorService
 
     public async Task<ValidationResult> ValidateAsync<T>(T model)
     {
-        var validator = _serviceProvider.GetService<IValidator<T>>();
-        
-        if (validator is null)
-            throw new InvalidOperationException($"No validator found for type {typeof(T).Name}");
-        
+        var validator = _serviceProvider.GetService<IValidator<T>>() 
+                        ?? throw new InvalidOperationException($"No validator found for type {typeof(T).Name}");
+    
         return await validator.ValidateAsync(model);
     }
 }

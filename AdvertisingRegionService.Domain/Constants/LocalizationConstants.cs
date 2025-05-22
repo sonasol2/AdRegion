@@ -1,13 +1,7 @@
-namespace AdvertisingRegionService.Domain;
+namespace AdvertisingRegionService.Domain.Constants;
 
-public static class Constants
+public class LocalizationConstants
 {
-    public static readonly string[] AllowedExtensions = new[] { ".txt", ".docx", ".doc", ".pdf" };
-    
-    
-    public const int MaxSearchLength = 100;
-    public const int MinSearchLength = 2;
-    
     //message
     public const string NotFoundMessage = "Not found";
     public const string BadRequestMessage = "Bad Request";
@@ -27,11 +21,4 @@ public static class Constants
     public const string InvalidFileMessage = "Invalid file";
     
     public const string NullModelMessage = "Model is null";
-    
-    //parse
-    public const string PartsSplitter = ":";
-    public const string LineSplitter = "\n";
-    public const string RegionSplitter = ",";
-    public const int MaxAllowedPartsCount = 2;
-    public const string LastRegionIndex = "/";
 }

@@ -1,109 +1,61 @@
 using AdvertisingRegionService.DAL.Interfaces;
-using AdvertisingRegionService.Domain.Models;
+using AdvertisingRegionService.DAL.Models;
 
 namespace AdvertisingRegionService.DAL.Repositories;
 
 public class CacheRepository: ICacheRepository
 {
-    private readonly CacheContext _context;
+    private readonly CacheContext _cacheContext;
 
-    public CacheRepository(CacheContext context)
+    public CacheRepository(CacheContext cacheContext)
     {
-        _context = context;
+        _cacheContext = cacheContext;
     }
 
     public ICollection<AdvertisingPlatform> GetAll()
-    {
-        try
-        {
-            return _context.AdvertisingPlatform.ToList();
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+    { 
+        return _cacheContext.AdvertisingPlatform.ToList();
     }
 
     public AdvertisingPlatform GetById(Guid id)
     {
-        ArgumentException.ThrowIfNullOrEmpty(nameof(id));
-        
-        return _context.AdvertisingPlatform.FirstOrDefault(ap => ap.Id == id)!;
+        return _cacheContext.AdvertisingPlatform.FirstOrDefault(ap => ap.Id == id)!;
     }
 
-    public void Add(AdvertisingPlatform entity)
+    public void Add(AdvertisingPlatform advertisingPlatform)
     {
-        try
-        {
-            _context.AdvertisingPlatform.Add(entity);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+        _cacheContext.AdvertisingPlatform.Add(advertisingPlatform);
     }
 
-    public void AddRange(ICollection<AdvertisingPlatform> entities)
+    public void AddRange(ICollection<AdvertisingPlatform> advertisingPlatforms)
     {
-        try
+        if (_cacheContext.AdvertisingPlatform is List<AdvertisingPlatform> cacheContext)
         {
-            if (entities == null)
+            cacheContext.AddRange(advertisingPlatforms);
+        }
+        else
+        {
+            foreach (var advertisingPlatform in advertisingPlatforms)
             {
-                throw new ArgumentNullException(nameof(entities));
-            }
-
-            if (_context.AdvertisingPlatform is List<AdvertisingPlatform> list)
-            {
-                list.AddRange(entities);
-            }
-            else
-            {
-                foreach (var entity in entities)
-                {
-                    _context.AdvertisingPlatform.Add(entity);
-                }
+                _cacheContext.AdvertisingPlatform.Add(advertisingPlatform);
             }
         }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+   
     }
     
-    public void Delete(AdvertisingPlatform entity)
+    public void RemoveEntity(AdvertisingPlatform advertisingPlatform)
     {
-        try
-        {
-            _context.AdvertisingPlatform.Remove(entity);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+        _cacheContext.AdvertisingPlatform.Remove(advertisingPlatform);
     }
 
     public void ClearCache()
     {
-        try
-        {
-            _context.AdvertisingPlatform.Clear();
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+        _cacheContext.AdvertisingPlatform.Clear();
     }
 
     public HashSet<string> GetAdvertisingPlatformByLocation(string location)
     {
-        ArgumentException.ThrowIfNullOrEmpty(location);
-        
-        return _context.AdvertisingPlatform
+        return _cacheContext.AdvertisingPlatform
             .FirstOrDefault(ap => ap.Region.Contains(location))!
             .Platforms;
     }

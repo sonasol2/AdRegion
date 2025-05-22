@@ -1,4 +1,4 @@
-using AdvertisingRegionService.Domain;
+using AdvertisingRegionService.Domain.Constants;
 using FluentValidation;
 
 namespace AdvertisingRegionService.API.Validators;
@@ -9,14 +9,14 @@ public class FormFileValidator : AbstractValidator<IFormFile>
     {
         RuleFor(x => x.FileName)
             .NotEmpty()
-            .WithMessage(Constants.InvalidFileNameMessage);
+            .WithMessage(LocalizationConstants.InvalidFileNameMessage);
         
         RuleFor(x => Path.GetExtension(x.FileName).ToLower())
-            .Must(ext => Constants.AllowedExtensions.Contains(ext))
-            .WithMessage(Constants.InvalidFileExtensionMessage);
+            .Must(ext => ValidationConstants.AllowedExtensions.Contains(ext))
+            .WithMessage(LocalizationConstants.InvalidFileExtensionMessage);
         
         RuleFor(x => x.Length)
             .GreaterThan(0)
-            .WithMessage(Constants.EmptyObjectMessage);
+            .WithMessage(LocalizationConstants.EmptyObjectMessage);
     }
 }
