@@ -7,7 +7,6 @@ using AdvertisingRegionService.DAL.Repositories;
 using AdvertisingRegionService.Domain.Interfaces;
 using AdvertisingRegionService.Domain.Parsers;
 using FluentValidation;
-using FluentValidation.AspNetCore;
 
 namespace AdvertisingRegionService.API.Configurations;
 
