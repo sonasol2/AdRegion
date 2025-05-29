@@ -1,6 +1,6 @@
 using AdvertisingRegionService.API.Interfaces;
+using AdvertisingRegionService.Domain.Abstractions;
 using AdvertisingRegionService.Domain.Constants;
-using AdvertisingRegionService.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdvertisingRegionService.API.Controllers;
@@ -24,7 +24,7 @@ public class AdvertisingPlatformsController : Controller
     {   
         // var validatorResult = await _validatorService.ValidateAsync(request);
         // if (!validatorResult.IsValid) return BadRequest(validatorResult.Errors);
-
+        
         await using var stream = request.OpenReadStream();
         
         var result = await _advertisingRegionService.UploadFile(stream); 

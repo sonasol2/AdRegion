@@ -1,6 +1,5 @@
 using AdvertisingRegionService.API.Configurations;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.ConfigureServices();

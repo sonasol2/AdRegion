@@ -1,12 +1,12 @@
 using AdvertisingRegionService.DAL.Models;
+using AdvertisingRegionService.Domain.Abstractions;
 using AdvertisingRegionService.Domain.Constants;
-using AdvertisingRegionService.Domain.Interfaces;
 
 namespace AdvertisingRegionService.Domain.Parsers;
 
 public class AdvertisingRegionFileParser : IAdvertisingRegionFileParser
 {
-    public List<AdvertisingPlatform> Parse(string fileContent)
+    public List<AdvertisingPlatformEntity> Parse(string fileContent)
     {
         
         var platformsDictionary = new Dictionary<string, HashSet<string>>();
@@ -37,16 +37,16 @@ public class AdvertisingRegionFileParser : IAdvertisingRegionFileParser
         }
     }
 
-    private List<AdvertisingPlatform> BuildRegionHierarchy(Dictionary<string, HashSet<string>> regionPlatforms)
+    private List<AdvertisingPlatformEntity> BuildRegionHierarchy(Dictionary<string, HashSet<string>> regionPlatforms)
     {
-        var platforms = new List<AdvertisingPlatform>();
+        var platforms = new List<AdvertisingPlatformEntity>();
         
         foreach (var region in regionPlatforms.Keys)
         {
-            platforms.Add(new AdvertisingPlatform
+            platforms.Add(new AdvertisingPlatformEntity
             {
-                Region = region,
-                Platforms = GetPlatformsForRegionHierarchy(region, regionPlatforms)
+                Region = new RegionEntity() {Name = region},
+                Platforms = new AdvertisingEntity() {PlatformsName = GetPlatformsForRegionHierarchy(region, regionPlatforms)} 
             });
         }
         

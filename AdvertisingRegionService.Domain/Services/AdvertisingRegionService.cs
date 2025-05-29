@@ -1,6 +1,6 @@
-using AdvertisingRegionService.DAL.Interfaces;
+using AdvertisingRegionService.DAL.Abstractions;
 using AdvertisingRegionService.DAL.Models;
-using AdvertisingRegionService.Domain.Interfaces;
+using AdvertisingRegionService.Domain.Abstractions;
 using AdvertisingRegionService.Domain.Models;
 
 namespace AdvertisingRegionService.Domain.Services;
@@ -8,12 +8,12 @@ namespace AdvertisingRegionService.Domain.Services;
 public class AdvertisingRegionService : IAdvertisingRegionService
 {
     private readonly IAdvertisingRegionFileParser _advertisingRegionFileParser;
-    private  readonly ICacheRepository _cacheRepository;
+    private  readonly IAdvertisingPlatformRepository _advertisingPlatformRepository;
     
-    public AdvertisingRegionService(IAdvertisingRegionFileParser advertisingRegionFileParser, ICacheRepository cacheRepository)
+    public AdvertisingRegionService(IAdvertisingRegionFileParser advertisingRegionFileParser, IAdvertisingPlatformRepository advertisingPlatformRepository)
     {
         _advertisingRegionFileParser = advertisingRegionFileParser;
-        _cacheRepository = cacheRepository;
+        _advertisingPlatformRepository = advertisingPlatformRepository;
     }
 
     public async Task<ExecutionResult<bool>> UploadFile(Stream file)
@@ -30,12 +30,12 @@ public class AdvertisingRegionService : IAdvertisingRegionService
 
     public ExecutionResult<HashSet<string>> GetPlatformByLocation(string searchRequest) 
     {
-        return ExecutionResult<HashSet<string>>.Success(_cacheRepository.GetAdvertisingPlatformByLocation(searchRequest));
+        return ExecutionResult<HashSet<string>>.Success(_advertisingPlatformRepository.GetAdvertisingPlatformByLocation(searchRequest));
     }
 
-    private void UpdateCache(List<AdvertisingPlatform> advertisingPlatforms)
+    private void UpdateCache(List<AdvertisingPlatformEntity> advertisingPlatforms)
     {
-        _cacheRepository.ClearCache();
-        _cacheRepository.AddRange(advertisingPlatforms);
+        _advertisingPlatformRepository.ClearCache();
+        _advertisingPlatformRepository.AddRange(advertisingPlatforms);
     }
 }

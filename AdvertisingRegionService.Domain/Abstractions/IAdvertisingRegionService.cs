@@ -1,6 +1,6 @@
 using AdvertisingRegionService.Domain.Models;
 
-namespace AdvertisingRegionService.Domain.Interfaces;
+namespace AdvertisingRegionService.Domain.Abstractions;
 
 public interface IAdvertisingRegionService
 {
