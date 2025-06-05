@@ -1,6 +1,6 @@
 namespace AdvertisingRegionService.Domain.Models.Interfaces;
 
-public interface IRegionModel
+public interface IRegion : IDomainModel
 {
     public string RegionName { get; }
 }

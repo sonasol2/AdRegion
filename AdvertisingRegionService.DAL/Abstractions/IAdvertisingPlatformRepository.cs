@@ -1,10 +1,10 @@
 using AdvertisingRegionService.DAL.Models;
 
-namespace AdvertisingRegionService.DAL.Interfaces;
+namespace AdvertisingRegionService.DAL.Abstractions;
 /// <summary>
 /// Interface for working with the cache of data about advertising platforms.
 /// </summary>
-public interface ICacheRepository : IRepository<AdvertisingPlatform>
+public interface IAdvertisingPlatformRepository : IRepository<AdvertisingPlatformEntity>
 {
     /// <summary>
     /// Clear all advertising platform data cache

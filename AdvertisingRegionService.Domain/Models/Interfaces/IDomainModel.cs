@@ -1,7 +1,6 @@
 namespace AdvertisingRegionService.Domain.Models.Interfaces;
 
-public interface IPlatformModel
+public interface IDomainModel
 {
     public Guid Id { get; }
-    public string PlatformName { get; }
 }

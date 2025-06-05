@@ -3,16 +3,16 @@ using AdvertisingRegionService.Domain.Models.Interfaces;
 
 namespace AdvertisingRegionService.Domain.Models;
 
-public class AdvertisingModel : DomainModel, IAdvertisingModel
+public class Advertising : IAdvertising
 {
     private readonly AdvertisingEntity _advertisingEntity;
 
-    public AdvertisingModel(AdvertisingEntity advertisingEntity)
+    public Advertising(AdvertisingEntity advertisingEntity)
     {
         _advertisingEntity = advertisingEntity;
     }
 
-    public Guid AdvertisingId => _advertisingEntity.Id;
+    public Guid Id => _advertisingEntity.Id;
     
     public HashSet<string> AdvertisingName
     {

@@ -5,36 +5,17 @@ namespace AdvertisingRegionService.DAL.Repositories;
 
 public class AdvertisingPlatformRepository : Repository<AdvertisingPlatformEntity>, IAdvertisingPlatformRepository
 {
-    private readonly CacheContext _cacheContext;
+    private readonly CacheContext<AdvertisingPlatformEntity> _cacheContext;
 
-    public AdvertisingPlatformRepository(CacheContext cacheContext)
+    public AdvertisingPlatformRepository(CacheContext<AdvertisingPlatformEntity> cacheContext) : base(cacheContext)
     {
         _cacheContext = cacheContext;
-    }
-
-    public override IQueryable<AdvertisingPlatformEntity> GetAll()
-    { 
-        return _cacheContext.AdvertisingPlatform.AsQueryable();
     }
 
     public override AdvertisingPlatformEntity GetById(Guid id)
     {
         return _cacheContext.AdvertisingPlatform.FirstOrDefault(ap => ap.Id == id)!;
     }
-
-    public override void Add(AdvertisingPlatformEntity advertisingPlatformEntity)
-    {
-        _cacheContext.AdvertisingPlatform.Add(advertisingPlatformEntity);
-    }
-
-    public override void AddRange(IEnumerable<AdvertisingPlatformEntity> advertisingPlatforms)
-    {
-            foreach (var advertisingPlatform in advertisingPlatforms)
-            {
-                _cacheContext.AdvertisingPlatform.Add(advertisingPlatform);
-            }
-    }
-
     public override void Update(AdvertisingPlatformEntity entity)
     {
         var existingEntity = GetById(entity.Id);
@@ -44,11 +25,7 @@ public class AdvertisingPlatformRepository : Repository<AdvertisingPlatformEntit
             existingEntity.Platforms = entity.Platforms;
         }
     }
-    public override void Remove(AdvertisingPlatformEntity advertisingPlatformEntity)
-    {
-        _cacheContext.AdvertisingPlatform.Remove(advertisingPlatformEntity);
-    }
-
+    
     public void ClearCache()
     {
         _cacheContext.AdvertisingPlatform.Clear();

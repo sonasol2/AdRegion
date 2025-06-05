@@ -3,16 +3,16 @@ using AdvertisingRegionService.Domain.Models.Interfaces;
 
 namespace AdvertisingRegionService.Domain.Models;
 
-public class RegionModel : DomainModel, IRegionModel
+public class Region : IRegion
 {
     private readonly RegionEntity _regionEntity;
 
-    public RegionModel(RegionEntity regionEntity)
+    public Region(RegionEntity regionEntity)
     {
         _regionEntity = regionEntity;
     }
 
-    public Guid RegionId => _regionEntity.Id;
+    public Guid Id => _regionEntity.Id;
     
     public string RegionName 
     { 
