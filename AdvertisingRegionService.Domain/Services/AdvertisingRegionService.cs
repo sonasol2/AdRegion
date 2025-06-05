@@ -1,22 +1,25 @@
 using AdvertisingRegionService.DAL.Abstractions;
 using AdvertisingRegionService.DAL.Models;
 using AdvertisingRegionService.Domain.Abstractions;
+using AdvertisingRegionService.Domain.Factories;
 using AdvertisingRegionService.Domain.Models;
 
 namespace AdvertisingRegionService.Domain.Services;
 
 public class AdvertisingRegionService : IAdvertisingRegionService
 {
+    private readonly IAdvertisingPlatformFactory advertisingPlatformFactory;
     private readonly IAdvertisingRegionFileParser _advertisingRegionFileParser;
     private  readonly IAdvertisingPlatformRepository _advertisingPlatformRepository;
     
-    public AdvertisingRegionService(IAdvertisingRegionFileParser advertisingRegionFileParser, IAdvertisingPlatformRepository advertisingPlatformRepository)
+    public AdvertisingRegionService(IAdvertisingRegionFileParser advertisingRegionFileParser, IAdvertisingPlatformRepository advertisingPlatformRepository, IAdvertisingPlatformFactory advertisingPlatformFactory)
     {
         _advertisingRegionFileParser = advertisingRegionFileParser;
         _advertisingPlatformRepository = advertisingPlatformRepository;
+        this.advertisingPlatformFactory = advertisingPlatformFactory;
     }
 
-    public async Task<ExecutionResult<bool>> UploadFile(Stream file)
+    public async Task<bool> UploadFile(Stream file)
     {
         using var reader = new StreamReader(file);
         var content = await reader.ReadToEndAsync();
@@ -25,12 +28,12 @@ public class AdvertisingRegionService : IAdvertisingRegionService
         
         UpdateCache(advertisingPlatforms);
 
-        return ExecutionResult<bool>.Success(true);
+        return true;
     }
 
-    public ExecutionResult<HashSet<string>> GetPlatformByLocation(string searchRequest) 
+    public HashSet<string> GetPlatformByLocation(string searchRequest) 
     {
-        return ExecutionResult<HashSet<string>>.Success(_advertisingPlatformRepository.GetAdvertisingPlatformByLocation(searchRequest));
+        return _advertisingPlatformRepository.GetAdvertisingPlatformByLocation(searchRequest);
     }
 
     private void UpdateCache(List<AdvertisingPlatformEntity> advertisingPlatforms)

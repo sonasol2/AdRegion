@@ -4,6 +4,6 @@ namespace AdvertisingRegionService.Domain.Abstractions;
 
 public interface IAdvertisingRegionService
 {
-    Task<ExecutionResult<bool>> UploadFile(Stream stream);
-    ExecutionResult<HashSet<string>> GetPlatformByLocation(string location);
+    Task<bool> UploadFile(Stream stream);
+    HashSet<string> GetPlatformByLocation(string location);
 }

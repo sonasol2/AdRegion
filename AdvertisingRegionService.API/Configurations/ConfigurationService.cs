@@ -1,10 +1,12 @@
 using AdvertisingRegionService.API.Interfaces;
+using AdvertisingRegionService.API.Middlewares;
 using AdvertisingRegionService.API.Validators;
 using AdvertisingRegionService.DAL;
-using AdvertisingRegionService.DAL.Interfaces;
+using AdvertisingRegionService.DAL.Abstractions;
 using AdvertisingRegionService.DAL.Models;
 using AdvertisingRegionService.DAL.Repositories;
-using AdvertisingRegionService.Domain.Interfaces;
+using AdvertisingRegionService.Domain.Abstractions;
+using AdvertisingRegionService.Domain.Factories;
 using AdvertisingRegionService.Domain.Parsers;
 using FluentValidation;
 
@@ -16,20 +18,25 @@ public static class ConfigurationService
     {
         services.AddEndpointsApiExplorer();
 
-        services.AddSingleton<CacheContext>();
+        services.AddExceptionHandler<GlobalExceptionHandler>();
+        services.AddProblemDetails(); // стоит ли использовать такой вариант?
+        
+        services.AddSingleton(typeof(CacheContext<>));
         
         services.AddSwaggerGen();
-        
+
         AddBusinessServices(services);
         AddControllersConfiguration(services);
         AddValidators(services);
-        AddRepositories(services);
+        AddRepositories(services);        
+        AddFactories(services);
+
     }
     
 
     private static void AddBusinessServices(this IServiceCollection services)
     {
-        services.AddScoped<IAdvertisingRegionService, Domain.Services.AdvertisingRegionService>();
+        services.AddSingleton<IAdvertisingRegionService, Domain.Services.AdvertisingRegionService>();
         services.AddSingleton<IAdvertisingRegionFileParser, AdvertisingRegionFileParser>();
     }
 
@@ -46,7 +53,15 @@ public static class ConfigurationService
 
     private static void AddRepositories(this IServiceCollection services)
     {
-        services.AddScoped<IRepository<AdvertisingPlatform>, CacheRepository>();
-        services.AddScoped<ICacheRepository, CacheRepository>();
+        services.AddSingleton<IAdvertisingPlatformRepository, AdvertisingPlatformRepository>();
+        services.AddSingleton<IRegionRepository, RegionRepository>();
+        services.AddSingleton<IAdvertisingRepository, AdvertisingRepository>();
+    }
+
+    private static void AddFactories(this IServiceCollection services)
+    {
+        services.AddSingleton<IRegionFactory, RegionFactory>();
+        services.AddSingleton<IAdvertisingFactory, AdvertisingFactory>();
+        services.AddSingleton<IAdvertisingPlatformFactory, AdvertisingPlatformFactory>();
     }
 }

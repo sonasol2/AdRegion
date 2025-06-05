@@ -22,16 +22,17 @@ public class AdvertisingPlatformsController : Controller
     [Route("upload")]
     public async Task<IActionResult> UploadFile(IFormFile? request)
     {   
-        // var validatorResult = await _validatorService.ValidateAsync(request);
-        // if (!validatorResult.IsValid) return BadRequest(validatorResult.Errors);
+        var validatorResult = await _validatorService.ValidateAsync(request);
+        if (!validatorResult.IsValid) return BadRequest(validatorResult.Errors);
         
         await using var stream = request.OpenReadStream();
         
         var result = await _advertisingRegionService.UploadFile(stream); 
-        if (!result.IsSuccessfully)
-            return BadRequest(result.Error);
         
-        return Ok(LocalizationConstants.SuccessMessage);
+        if (!result)
+            return BadRequest();
+        
+        return Ok();
     }
 
     
@@ -44,11 +45,9 @@ public class AdvertisingPlatformsController : Controller
         
         var result = _advertisingRegionService.GetPlatformByLocation(searchRequest);
         
-        if (!result.IsSuccessfully) return BadRequest(result.Error);
-
-        if (result.Result.Count == 0)
-            return BadRequest(LocalizationConstants.NotFoundMessage);
+        if (result.Count == 0)
+            return NotFound(LocalizationConstants.NotFoundMessage);
         
-        return Ok(result.Result);
+        return Ok(result);
     }
 }
