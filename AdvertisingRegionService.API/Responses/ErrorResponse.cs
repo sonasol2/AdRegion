@@ -1,6 +1,6 @@
 using System.Net;
 
-namespace AdvertisingRegionService.API.Models;
+namespace AdvertisingRegionService.API.Responses;
 
 public class ErrorResponse
 {

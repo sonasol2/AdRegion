@@ -1,14 +1,12 @@
-using AdvertisingRegionService.API.Interfaces;
 using AdvertisingRegionService.API.Middlewares;
-using AdvertisingRegionService.API.Validators;
 using AdvertisingRegionService.DAL;
 using AdvertisingRegionService.DAL.Abstractions;
-using AdvertisingRegionService.DAL.Models;
 using AdvertisingRegionService.DAL.Repositories;
 using AdvertisingRegionService.Domain.Abstractions;
 using AdvertisingRegionService.Domain.Factories;
 using AdvertisingRegionService.Domain.Parsers;
 using FluentValidation;
+using FluentValidation.AspNetCore;
 
 namespace AdvertisingRegionService.API.Configurations;
 
@@ -19,7 +17,7 @@ public static class ConfigurationService
         services.AddEndpointsApiExplorer();
 
         services.AddExceptionHandler<GlobalExceptionHandler>();
-        services.AddProblemDetails(); // стоит ли использовать такой вариант?
+        services.AddProblemDetails();
         
         services.AddSingleton(typeof(CacheContext<>));
         
@@ -30,7 +28,6 @@ public static class ConfigurationService
         AddValidators(services);
         AddRepositories(services);        
         AddFactories(services);
-
     }
     
 
@@ -43,7 +40,8 @@ public static class ConfigurationService
     private static void AddValidators(this IServiceCollection services)
     {
         services.AddValidatorsFromAssembly(typeof(Program).Assembly); //TODO: Обговорить автоматическую валидацию в контроллерах и как реализовать
-        services.AddTransient<IValidatorService, ValidatorService>();
+        services.AddFluentValidationAutoValidation();
+        services.AddFluentValidationClientsideAdapters();
     }
     
     private static void AddControllersConfiguration(this IServiceCollection services)
