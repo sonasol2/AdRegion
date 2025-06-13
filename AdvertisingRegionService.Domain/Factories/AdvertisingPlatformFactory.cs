@@ -23,8 +23,21 @@ public class AdvertisingPlatformFactory : BaseDomainFactory<IAdvertisingPlatform
         var region = _regionFactory.Create(entity.Region);
         var advertising = _advertisingFactory.Create(entity.Platforms);
         
-        return new AdvertisingPlatform(entity, _advertisingPlatformRepository, advertising, region);
+        return new AdvertisingPlatform(entity, advertising, region);
     }
-    
-    
+
+    public override IEnumerable<IAdvertisingPlatform> CreateAll(IEnumerable<AdvertisingPlatformEntity> entities)
+    {
+        var platforms = new List<IAdvertisingPlatform>();
+        
+        foreach (var entity in entities)
+        {
+            var region = _regionFactory.Create(entity.Region);
+            var advertising = _advertisingFactory.Create(entity.Platforms);
+            
+            var platform = new AdvertisingPlatform(entity, advertising, region);
+            platforms.Add(platform);
+        }
+        return platforms;
+    }
 }

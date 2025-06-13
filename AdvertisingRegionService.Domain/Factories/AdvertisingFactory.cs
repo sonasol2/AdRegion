@@ -17,4 +17,16 @@ public class AdvertisingFactory : BaseDomainFactory<IAdvertising, AdvertisingEnt
     {
         return new Advertising(entity);
     }
+
+    public override IEnumerable<IAdvertising> CreateAll(IEnumerable<AdvertisingEntity> entities)
+    {
+        var advertisings = new List<Advertising>();
+
+        foreach (var entity in entities)
+        {
+            var advertising = new Advertising(entity);
+            advertisings.Add(advertising);
+        }
+        return advertisings;
+    }
 }

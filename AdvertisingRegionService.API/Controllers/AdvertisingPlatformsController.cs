@@ -1,12 +1,8 @@
-using AdvertisingRegionService.API.Interfaces;
-using AdvertisingRegionService.API.Models;
-using AdvertisingRegionService.API.Requests;
-using AdvertisingRegionService.API.Responses;
+using AdvertisingRegionService.API.Models.Requests;
+using AdvertisingRegionService.API.Models.Responses;
+using AdvertisingRegionService.API.Services;
 using AdvertisingRegionService.Domain.Abstractions;
 using AdvertisingRegionService.Domain.Constants;
-using AdvertisingRegionService.Domain.DTO;
-using AdvertisingRegionService.Domain.Models;
-using AdvertisingRegionService.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdvertisingRegionService.API.Controllers;
@@ -15,7 +11,7 @@ namespace AdvertisingRegionService.API.Controllers;
 public class AdvertisingPlatformsController : Controller
 {
     private readonly IAdvertisingRegionService _advertisingRegionService;
-
+    
     public AdvertisingPlatformsController(IAdvertisingRegionService advertisingRegionService)
     {
         _advertisingRegionService = advertisingRegionService;
@@ -40,12 +36,13 @@ public class AdvertisingPlatformsController : Controller
     [Route("search")]
     public IActionResult SearchPlatform([FromQuery]SearchRequest searchRequest)
     {
-        
-        var result = _advertisingRegionService.GetPlatformByLocation(searchRequest);
-        
-        if (result.Count == 0)
+        var searchPredicates = PredicateSearchFactory.CreateSearchPredicates(searchRequest);
+        var result = _advertisingRegionService.SearchPlatform(searchPredicates);
+        if (result == null || !result.Any())
             return NotFound(LocalizationConstants.NotFoundMessage);
         
-        return Ok(result);
+        var searchResponse = Mapper.MapSearchResponse(result);
+        
+        return Ok(searchResponse);
     }
 }

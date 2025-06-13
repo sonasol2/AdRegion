@@ -1,12 +1,13 @@
 using System.Net;
 using System.Text.Json;
-using AdvertisingRegionService.API.Models;
-using AdvertisingRegionService.API.Responses;
-using AdvertisingRegionService.Domain.Constants;
+using AdvertisingRegionService.API.Models.Responses;
 using Microsoft.AspNetCore.Diagnostics;
 
 namespace AdvertisingRegionService.API.Middlewares;
 
+/// <summary>
+/// Middleware for global exception handling
+/// </summary>
 public class GlobalExceptionHandler : IExceptionHandler
 {
     private readonly  ILogger<GlobalExceptionHandler> _logger;

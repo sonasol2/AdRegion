@@ -15,4 +15,16 @@ public class RegionFactory : BaseDomainFactory<IRegion, RegionEntity>, IRegionFa
     {
         return new Region(entity);
     }
+
+    public override IEnumerable<IRegion> CreateAll(IEnumerable<RegionEntity> entities)
+    {
+        var regions = new List<Region>();
+
+        foreach (var entity in entities)
+        {
+            var region = new Region(entity);
+            regions.Add(region);
+        }
+        return regions;
+    }
 }

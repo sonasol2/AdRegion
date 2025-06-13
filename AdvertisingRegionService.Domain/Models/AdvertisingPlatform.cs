@@ -7,14 +7,12 @@ namespace AdvertisingRegionService.Domain.Models;
 public class AdvertisingPlatform : IAdvertisingPlatform
 {
     private readonly AdvertisingPlatformEntity _advertisingPlatform;
-    private readonly IAdvertisingPlatformRepository _advertisingPlatformRepository;
     private IAdvertising _advertising;
     private IRegion _region;
 
-    public AdvertisingPlatform(AdvertisingPlatformEntity advertisingPlatform, IAdvertisingPlatformRepository advertisingPlatformRepository, IAdvertising advertising, IRegion region)
+    public AdvertisingPlatform(AdvertisingPlatformEntity advertisingPlatform, IAdvertising advertising, IRegion region)
     {
         _advertisingPlatform = advertisingPlatform;
-        _advertisingPlatformRepository = advertisingPlatformRepository;
         _advertising = advertising;
         _region = region;
     }

@@ -1,5 +1,4 @@
-using AdvertisingRegionService.API.Models;
-using AdvertisingRegionService.API.Requests;
+using AdvertisingRegionService.API.Models.Requests;
 using AdvertisingRegionService.Domain.Constants;
 using FluentValidation;
 

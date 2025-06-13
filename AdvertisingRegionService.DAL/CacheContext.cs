@@ -1,44 +1,54 @@
-using AdvertisingRegionService.DAL.Abstractions;
-using AdvertisingRegionService.DAL.Models;
 
 namespace AdvertisingRegionService.DAL;
 
-public class CacheContext<T> //TODO: больше сымитировать БД, сделать статическим с синх. 
+public class CacheContext<T>
 {
-    private static ICollection<T> advertisingPlatform { get; set; }
-
-    static CacheContext()
-    {
-        advertisingPlatform = new List<T>();
-    }
+    private static readonly object _lock = new();
+    private static ICollection<T> advertisingPlatform { get; set; } = new List<T>();
+    
     
     public ICollection<T> AdvertisingPlatform => advertisingPlatform;
 
     public void Add(T entity)
     {
-        advertisingPlatform.Add(entity);
+        lock (_lock)
+        {
+            advertisingPlatform.Add(entity);
+        }
     }
 
     public void Remove(T entity)
     {
-        advertisingPlatform.Remove(entity);
+        lock (_lock)
+        {
+            advertisingPlatform.Remove(entity);
+        }
     }
 
     public void Update(T entity)
     {
-        advertisingPlatform.Remove(entity);
+        lock (_lock)
+        {
+            throw new NotImplementedException();  //TODO: дописать обновление
+        }
     }
 
     public IQueryable<T> GetAll()
     {
-        return advertisingPlatform.AsQueryable();
+        lock (_lock)
+        {
+            return advertisingPlatform.AsQueryable();
+        }
     }
 
     public void AddRange(IEnumerable<T> entities)
     {
-        foreach (var entity in entities)
+        lock (_lock)
         {
-            advertisingPlatform.Add(entity);
+            foreach (var entity in entities)
+            {
+                advertisingPlatform.Add(entity);
+            }
         }
     }
 }

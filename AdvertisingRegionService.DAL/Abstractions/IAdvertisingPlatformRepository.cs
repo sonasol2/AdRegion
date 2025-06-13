@@ -14,7 +14,7 @@ public interface IAdvertisingPlatformRepository : IRepository<AdvertisingPlatfor
     /// Gets a list advertising platform available for specified location.
     /// Takes into account the hierarchy of regions.
     /// </summary>
-    /// <param name="location">Location(region) for which platforms are requested </param>
+    /// <param name="region">Location(region) for which platforms are requested </param>
     /// <returns>Unique advertising platform name</returns>
-    HashSet<string> GetAdvertisingPlatformByLocation(string location);
+    HashSet<string> GetAdvertisingPlatformByRegion(string region);
 }

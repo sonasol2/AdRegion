@@ -1,4 +1,4 @@
-namespace AdvertisingRegionService.API.Requests;
+namespace AdvertisingRegionService.API.Models.Requests;
 
 public class SearchRequest
 {

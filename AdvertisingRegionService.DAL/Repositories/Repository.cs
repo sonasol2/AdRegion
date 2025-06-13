@@ -10,8 +10,8 @@ public abstract class Repository<T> : IRepository<T> where T: IEntity // зде�
     {
         _context = context;
     }
-
-
+    
+    
     public abstract T? GetById(Guid id);
 
     public virtual IQueryable<T> GetAll()
