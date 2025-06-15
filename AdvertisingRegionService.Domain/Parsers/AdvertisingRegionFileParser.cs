@@ -1,11 +1,22 @@
 using AdvertisingRegionService.DAL.Models;
 using AdvertisingRegionService.Domain.Abstractions;
 using AdvertisingRegionService.Domain.Constants;
+using AdvertisingRegionService.Domain.Factories;
+using AdvertisingRegionService.Domain.Models;
 
 namespace AdvertisingRegionService.Domain.Parsers;
 
 public class AdvertisingRegionFileParser : IAdvertisingRegionFileParser
 {
+    
+    private readonly IAdvertisingPlatformFactory _advertisingPlatformFactory;
+    private readonly IAdvertisingFactory _advertisingFactory;
+    private readonly IRegionFactory _regionFactory;
+    public AdvertisingRegionFileParser(IAdvertisingPlatformFactory advertisingPlatformFactory)
+    {
+        _advertisingPlatformFactory = advertisingPlatformFactory;
+    }
+
     public List<AdvertisingPlatformEntity> Parse(string fileContent)
     {
         
@@ -46,7 +57,7 @@ public class AdvertisingRegionFileParser : IAdvertisingRegionFileParser
             platforms.Add(new AdvertisingPlatformEntity
             {
                 Region = new RegionEntity() {Name = region},
-                Platforms = new AdvertisingEntity() {PlatformsName = GetPlatformsForRegionHierarchy(region, regionPlatforms)} 
+                Platform = new AdvertisingEntity() {PlatformNames = GetPlatformsForRegionHierarchy(region, regionPlatforms), PostedAt = DateTime.UtcNow} 
             });
         }
         

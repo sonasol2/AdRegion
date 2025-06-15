@@ -21,7 +21,7 @@ public class AdvertisingPlatformFactory : BaseDomainFactory<IAdvertisingPlatform
     public override IAdvertisingPlatform Create(AdvertisingPlatformEntity entity)
     {
         var region = _regionFactory.Create(entity.Region);
-        var advertising = _advertisingFactory.Create(entity.Platforms);
+        var advertising = _advertisingFactory.Create(entity.Platform);
         
         return new AdvertisingPlatform(entity, advertising, region);
     }
@@ -33,7 +33,7 @@ public class AdvertisingPlatformFactory : BaseDomainFactory<IAdvertisingPlatform
         foreach (var entity in entities)
         {
             var region = _regionFactory.Create(entity.Region);
-            var advertising = _advertisingFactory.Create(entity.Platforms);
+            var advertising = _advertisingFactory.Create(entity.Platform);
             
             var platform = new AdvertisingPlatform(entity, advertising, region);
             platforms.Add(platform);

@@ -1,5 +1,4 @@
 using AdvertisingRegionService.API.Models.Requests;
-using AdvertisingRegionService.API.Models.Responses;
 using AdvertisingRegionService.API.Services;
 using AdvertisingRegionService.Domain.Abstractions;
 using AdvertisingRegionService.Domain.Constants;

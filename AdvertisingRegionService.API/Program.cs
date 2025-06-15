@@ -1,11 +1,25 @@
 using AdvertisingRegionService.API.Configurations;
 
-var builder = WebApplication.CreateBuilder(args);
+var logger = NLog.LogManager.GetCurrentClassLogger();
 
-builder.Services.ConfigureServices();
+try
+{
+    var builder = WebApplication.CreateBuilder(args);
 
-var app = builder.Build();
+    builder.Services.ConfigureServices();
 
-app.ConfigureApplication();
+    var app = builder.Build();
 
-app.Run();
+    app.ConfigureApplication();
+
+    app.Run();
+}
+catch (Exception ex)
+{
+    logger.Error(ex, $"Stopped program because of exception: {ex.ToString()}");
+    throw;
+}
+finally
+{
+    NLog.LogManager.Shutdown();
+}

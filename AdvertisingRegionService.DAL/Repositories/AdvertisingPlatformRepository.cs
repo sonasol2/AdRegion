@@ -22,7 +22,7 @@ public class AdvertisingPlatformRepository : Repository<AdvertisingPlatformEntit
         if (existingEntity != null)
         {
             existingEntity.Region = entity.Region;
-            existingEntity.Platforms = entity.Platforms;
+            existingEntity.Platform = entity.Platform;
         }
     }
     
@@ -35,6 +35,6 @@ public class AdvertisingPlatformRepository : Repository<AdvertisingPlatformEntit
     {
         return _cacheContext.AdvertisingPlatform
             .FirstOrDefault(ap => ap.Region.Name.Contains(region))!
-            .Platforms.PlatformsName;
+            .Platform.PlatformNames;
     }
 }
