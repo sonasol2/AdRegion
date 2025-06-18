@@ -5,6 +5,7 @@ using AdvertisingRegionService.DAL.Repositories;
 using AdvertisingRegionService.Domain.Abstractions;
 using AdvertisingRegionService.Domain.Factories;
 using AdvertisingRegionService.Domain.Parsers;
+using AdvertisingRegionService.Domain.Services;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 
@@ -35,6 +36,7 @@ public static class ConfigurationService
     {
         services.AddSingleton<IAdvertisingRegionService, Domain.Services.AdvertisingRegionService>();
         services.AddSingleton<IAdvertisingRegionFileParser, AdvertisingRegionFileParser>();
+        services.AddSingleton<IDateTimeHelper, DateTimeHelper>();
     }
 
     private static void AddValidators(this IServiceCollection services)

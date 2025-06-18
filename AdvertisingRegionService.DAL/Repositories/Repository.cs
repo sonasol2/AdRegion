@@ -5,16 +5,18 @@ namespace AdvertisingRegionService.DAL.Repositories;
 public abstract class Repository<T> : IRepository<T> where T: IEntity // здесь будет базовая реализация когда добавлю EF
 {
     private readonly CacheContext<T> _context;
-
+    
     protected Repository(CacheContext<T> context)
     {
         _context = context;
     }
     
-    
-    public abstract T? GetById(Guid id);
+    public virtual T? GetById(Guid id)
+    {
+        return _context.GetById(id);
+    }
 
-    public virtual IQueryable<T> GetAll()
+    public virtual IReadOnlyCollection<T> GetAll()
     {
         return _context.GetAll();
     }

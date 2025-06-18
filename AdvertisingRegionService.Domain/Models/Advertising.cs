@@ -29,7 +29,8 @@ public class Advertising : IAdvertising
     public HashSet<string> AdvertisingName
     {
         get => _advertisingEntity.PlatformNames;
-        set =>  _advertisingEntity.PlatformNames = value;}
+        set =>  _advertisingEntity.PlatformNames = value;
+    }
 
     /// <summary>
     /// Gets or sets the date and time when the advertising entity was published.

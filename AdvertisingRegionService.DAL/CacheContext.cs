@@ -1,14 +1,24 @@
 
+using AdvertisingRegionService.DAL.Abstractions;
+
 namespace AdvertisingRegionService.DAL;
 
-public class CacheContext<T>
+public class CacheContext<T> where T : IEntity
 {
     private static readonly object _lock = new();
     private static ICollection<T> advertisingPlatform { get; set; } = new List<T>();
     
     
     public ICollection<T> AdvertisingPlatform => advertisingPlatform;
-
+    
+    public T? GetById(Guid id)
+    {
+        lock (_lock)
+        {
+            return advertisingPlatform.FirstOrDefault(entity => entity.Id == id);
+        }
+    }
+    
     public void Add(T entity)
     {
         lock (_lock)
@@ -33,11 +43,11 @@ public class CacheContext<T>
         }
     }
 
-    public IQueryable<T> GetAll()
+    public IReadOnlyCollection<T> GetAll()
     {
         lock (_lock)
         {
-            return advertisingPlatform.AsQueryable();
+            return advertisingPlatform.Select(entity => entity).ToList();
         }
     }
 

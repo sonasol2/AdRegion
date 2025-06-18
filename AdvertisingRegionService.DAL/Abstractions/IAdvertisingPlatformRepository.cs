@@ -16,5 +16,5 @@ public interface IAdvertisingPlatformRepository : IRepository<AdvertisingPlatfor
     /// </summary>
     /// <param name="region">Location(region) for which platforms are requested </param>
     /// <returns>Unique advertising platform name</returns>
-    HashSet<string> GetAdvertisingPlatformByRegion(string region);
+    HashSet<string> GetByRegion(string region);
 }

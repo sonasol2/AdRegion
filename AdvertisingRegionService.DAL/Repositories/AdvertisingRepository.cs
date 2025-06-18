@@ -8,12 +8,7 @@ public class AdvertisingRepository : Repository<AdvertisingEntity>, IAdvertising
     public AdvertisingRepository(CacheContext<AdvertisingEntity> context) : base(context)
     {
     }
-
-    public override AdvertisingEntity? GetById(Guid id)
-    {
-        throw new NotImplementedException();
-    }
-
+    
     public override void AddRange(IEnumerable<AdvertisingEntity> entities)
     {
         throw new NotImplementedException();

@@ -11,17 +11,8 @@ public class RegionRepository : Repository<RegionEntity>, IRegionRepository
     {
         _context = context;
     }
-
-    public override RegionEntity? GetById(Guid id)
-    {
-        throw new NotImplementedException();
-    }
+    
     public override void AddRange(IEnumerable<RegionEntity> entities)
-    {
-        throw new NotImplementedException();
-    }
-
-    public override IQueryable<RegionEntity> GetAll()
     {
         throw new NotImplementedException();
     }
