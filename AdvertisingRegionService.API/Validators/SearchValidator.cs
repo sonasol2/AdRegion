@@ -15,6 +15,6 @@ public class SearchValidator : AbstractValidator<SearchRequest>
             .NotNull().WithMessage(LocalizationConstants.NullModelMessage)
             .NotEmpty().WithMessage(LocalizationConstants.EmptySearchStringMessage)
             .Length(ValidationConstants.MinSearchLength, ValidationConstants.MaxSearchLength)
-            .WithMessage($"Lenght must be at {ValidationConstants.MinSearchLength} to {ValidationConstants.MaxSearchLength} symbols");
+            .WithMessage(ValidationConstants.MaxMinSearchStringLengthMessage);
     }
 }

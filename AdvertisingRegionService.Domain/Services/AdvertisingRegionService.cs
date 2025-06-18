@@ -1,7 +1,7 @@
 using AdvertisingRegionService.DAL.Abstractions;
 using AdvertisingRegionService.DAL.Models;
 using AdvertisingRegionService.Domain.Abstractions;
-using AdvertisingRegionService.Domain.DTO;
+using AdvertisingRegionService.Domain.Exceptions;
 using AdvertisingRegionService.Domain.Factories;
 using AdvertisingRegionService.Domain.Models;
 using AdvertisingRegionService.Domain.Models.Interfaces;
@@ -28,8 +28,11 @@ public class AdvertisingRegionService : IAdvertisingRegionService
 
         var advertisingPlatforms = _advertisingRegionFileParser.Parse(content);
         
+        if (!advertisingPlatforms.Any())
+            throw new AdvertisingFileProcessingException();
+        
         UpdateCache(advertisingPlatforms);
-
+        
         return true;
     }
 
@@ -45,9 +48,14 @@ public class AdvertisingRegionService : IAdvertisingRegionService
         
         if (searchPredicates == null)
             return allPlatforms;
-        
-        return allPlatforms.Where(platform =>
-            searchPredicates.All(predicate => predicate(platform)));
+
+        var filteredPlatforms = allPlatforms
+            .Where(platform => searchPredicates.All(predicate => predicate(platform)))
+            .ToList();
+
+        return filteredPlatforms.Count == 0 
+            ? new List<AdvertisingPlatform>()
+            : filteredPlatforms;
     }
 
     private void UpdateCache(List<AdvertisingPlatformEntity> advertisingPlatforms)
