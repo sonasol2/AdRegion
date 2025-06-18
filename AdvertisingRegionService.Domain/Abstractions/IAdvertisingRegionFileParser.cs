@@ -12,6 +12,6 @@ public interface IAdvertisingRegionFileParser
     /// </summary>
     /// <param name="fileContents">The content of the text file as a string.</param>
     /// <returns>A list of advertising platform</returns>
-    List<AdvertisingPlatformEntity> Parse(string fileContents);
+    IReadOnlyCollection<AdvertisingPlatformEntity> Parse(string fileContents);
 
 }

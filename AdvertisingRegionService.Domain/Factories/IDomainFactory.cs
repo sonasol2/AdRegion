@@ -9,5 +9,5 @@ public interface IDomainFactory<out TDomain, in TEntity>
     where TEntity : class, IEntity
 {
     TDomain Create(TEntity entity);
-    IEnumerable<TDomain> CreateAll(IEnumerable<TEntity> entities);
+    IReadOnlyCollection<TDomain> CreateAny(IEnumerable<TEntity> entities);
 }

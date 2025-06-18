@@ -19,7 +19,7 @@ public interface IAdvertisingRegionService
     /// Searches for advertising platforms based on the specified search predicates.
     /// </summary>
     /// <param name="searchPredicates">A list of parameters defines the search criteria. </param>
-    /// <returns>An IEnumerable of <see cref="IAdvertisingPlatform"/> objects matching the search criteria, or null if no platforms are found.</returns>
-    IEnumerable<IAdvertisingPlatform>? SearchPlatform(List<SearchPredicate> searchPredicates);
+    /// <returns>An IReadOnlyCollection of <see cref="IAdvertisingPlatform"/> objects matching the search criteria, or null if no platforms are found.</returns>
+    IReadOnlyCollection<IAdvertisingPlatform>? SearchPlatform(List<SearchPredicate>? searchPredicates);
 }
 

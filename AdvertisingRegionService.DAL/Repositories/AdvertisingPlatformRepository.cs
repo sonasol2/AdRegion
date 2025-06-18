@@ -31,7 +31,7 @@ public class AdvertisingPlatformRepository : Repository<AdvertisingPlatformEntit
         _cacheContext.AdvertisingPlatform.Clear();
     }
 
-    public HashSet<string> GetAdvertisingPlatformByRegion(string region)
+    public HashSet<string> GetByRegion(string region)
     {
         return _cacheContext.AdvertisingPlatform
             .FirstOrDefault(ap => ap.Region.Name.Contains(region))!

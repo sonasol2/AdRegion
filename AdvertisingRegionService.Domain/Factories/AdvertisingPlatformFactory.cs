@@ -26,7 +26,7 @@ public class AdvertisingPlatformFactory : BaseDomainFactory<IAdvertisingPlatform
         return new AdvertisingPlatform(entity, advertising, region);
     }
 
-    public override IEnumerable<IAdvertisingPlatform> CreateAll(IEnumerable<AdvertisingPlatformEntity> entities)
+    public override IReadOnlyCollection<IAdvertisingPlatform> CreateAny(IEnumerable<AdvertisingPlatformEntity> entities)
     {
         var platforms = new List<IAdvertisingPlatform>();
         

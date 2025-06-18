@@ -38,13 +38,14 @@ public class AdvertisingRegionService : IAdvertisingRegionService
 
     public HashSet<string> GetPlatformByRegion(string searchRequest)
     {
-        return _advertisingPlatformRepository.GetAdvertisingPlatformByRegion(searchRequest);
+        return _advertisingPlatformRepository.GetByRegion(searchRequest);
     }
 
-    public IEnumerable<IAdvertisingPlatform>? SearchPlatform(List<SearchPredicate> searchPredicates)
+    public IReadOnlyCollection<IAdvertisingPlatform>? SearchPlatform(List<SearchPredicate>? searchPredicates)
     {
-        var entityAdvertisingPlatforms = _advertisingPlatformRepository.GetAll().AsEnumerable();
-            var allPlatforms  = _advertisingPlatformFactory.CreateAll(entityAdvertisingPlatforms);
+        var entityAdvertisingPlatforms = _advertisingPlatformRepository.GetAll();
+        
+        var allPlatforms  = _advertisingPlatformFactory.CreateAny(entityAdvertisingPlatforms); // а нельзя ли сюда сразу передать _advertisingPlatformRepository.GetAll(); сразу?
         
         if (searchPredicates == null)
             return allPlatforms;
@@ -58,7 +59,7 @@ public class AdvertisingRegionService : IAdvertisingRegionService
             : filteredPlatforms;
     }
 
-    private void UpdateCache(List<AdvertisingPlatformEntity> advertisingPlatforms)
+    private void UpdateCache(IReadOnlyCollection<AdvertisingPlatformEntity> advertisingPlatforms)
     {
         _advertisingPlatformRepository.ClearCache();
         _advertisingPlatformRepository.AddRange(advertisingPlatforms);

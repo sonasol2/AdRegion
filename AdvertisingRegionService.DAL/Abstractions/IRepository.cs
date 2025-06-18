@@ -9,8 +9,8 @@ public interface IRepository<T> where T : IEntity
     /// <summary>
     /// Get all entities of type <typeparam name="T"/>
     /// </summary>
-    /// <returns>Query <see cref="IQueryable{T}"/> to select all entities</returns>
-    IQueryable<T> GetAll();
+    /// <returns>Enumerable <see cref="IEnumerable{T}"/> to select all entities</returns>
+    IReadOnlyCollection<T> GetAll();
     /// <summary>
     /// Get entity by Id
     /// </summary>

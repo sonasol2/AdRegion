@@ -2,7 +2,6 @@ using AdvertisingRegionService.DAL.Models;
 using AdvertisingRegionService.Domain.Abstractions;
 using AdvertisingRegionService.Domain.Constants;
 using AdvertisingRegionService.Domain.Factories;
-using AdvertisingRegionService.Domain.Models;
 
 namespace AdvertisingRegionService.Domain.Parsers;
 
@@ -12,12 +11,14 @@ public class AdvertisingRegionFileParser : IAdvertisingRegionFileParser
     private readonly IAdvertisingPlatformFactory _advertisingPlatformFactory;
     private readonly IAdvertisingFactory _advertisingFactory;
     private readonly IRegionFactory _regionFactory;
-    public AdvertisingRegionFileParser(IAdvertisingPlatformFactory advertisingPlatformFactory)
+    private readonly IDateTimeHelper _dateTimeHelper;
+    public AdvertisingRegionFileParser(IAdvertisingPlatformFactory advertisingPlatformFactory, IDateTimeHelper dateTimeHelper)
     {
         _advertisingPlatformFactory = advertisingPlatformFactory;
+        _dateTimeHelper = dateTimeHelper;
     }
 
-    public List<AdvertisingPlatformEntity> Parse(string fileContent)
+    public IReadOnlyCollection<AdvertisingPlatformEntity> Parse(string fileContent)
     {
         
         var platformsDictionary = new Dictionary<string, HashSet<string>>();
@@ -42,7 +43,7 @@ public class AdvertisingRegionFileParser : IAdvertisingRegionFileParser
         foreach (var location in regions)
         {
             if (!platforms.ContainsKey(location))
-                platforms[location] = new HashSet<string>();
+                platforms[location] = [];
             if (!platforms[location].Contains(platform))
                 platforms[location].Add(platform);
         }
@@ -57,7 +58,10 @@ public class AdvertisingRegionFileParser : IAdvertisingRegionFileParser
             platforms.Add(new AdvertisingPlatformEntity
             {
                 Region = new RegionEntity() {Name = region},
-                Platform = new AdvertisingEntity() {PlatformNames = GetPlatformsForRegionHierarchy(region, regionPlatforms), PostedAt = DateTime.UtcNow} 
+                Platform = new AdvertisingEntity() {
+                    PlatformNames = GetPlatformsForRegionHierarchy(region, regionPlatforms), 
+                    PostedAt = _dateTimeHelper.UtcNow,
+                } 
             });
         }
         
@@ -67,7 +71,7 @@ public class AdvertisingRegionFileParser : IAdvertisingRegionFileParser
     private HashSet<string> GetPlatformsForRegionHierarchy(string region, Dictionary<string, HashSet<string>> regionPlatforms)
     {
         var currentRegion = region;
-        var platformsForLocation = new HashSet<string>();
+        HashSet<string> platformsForLocation = [];
         
         while (!string.IsNullOrEmpty(currentRegion))
         {

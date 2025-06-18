@@ -5,7 +5,7 @@ namespace AdvertisingRegionService.API.Services;
 
 public class PredicateSearchFactory
 {
-    public static List<SearchPredicate> CreateSearchPredicates(SearchRequest searchRequest) // вынес сюда чтобы сделать контроллер чище
+    public static List<SearchPredicate>? CreateSearchPredicates(SearchRequest searchRequest) // вынес сюда чтобы сделать контроллер чище
     {
         var searchPredicates = new List<SearchPredicate>();
         var searchText = searchRequest.SearchText.ToLower();

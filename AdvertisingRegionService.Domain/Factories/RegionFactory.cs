@@ -16,7 +16,7 @@ public class RegionFactory : BaseDomainFactory<IRegion, RegionEntity>, IRegionFa
         return new Region(entity);
     }
 
-    public override IEnumerable<IRegion> CreateAll(IEnumerable<RegionEntity> entities)
+    public override IReadOnlyCollection<IRegion> CreateAny(IEnumerable<RegionEntity> entities)
     {
         var regions = new List<Region>();
 

@@ -15,5 +15,5 @@ public abstract class BaseDomainFactory<TDomain, TEntity> : IDomainFactory<TDoma
     }
 
     public abstract TDomain Create(TEntity entity);
-    public abstract IEnumerable<TDomain> CreateAll(IEnumerable<TEntity> entities);
+    public abstract IReadOnlyCollection<TDomain> CreateAny(IEnumerable<TEntity> entities);
 }
