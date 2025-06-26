@@ -1,12 +1,24 @@
 using AdvertisingRegionService.DAL.Models;
+using AdvertisingRegionService.Domain.Abstractions;
 using AdvertisingRegionService.Domain.Constants;
-using AdvertisingRegionService.Domain.Interfaces;
+using AdvertisingRegionService.Domain.Factories;
 
 namespace AdvertisingRegionService.Domain.Parsers;
 
 public class AdvertisingRegionFileParser : IAdvertisingRegionFileParser
 {
-    public List<AdvertisingPlatform> Parse(string fileContent)
+    
+    private readonly IAdvertisingPlatformFactory _advertisingPlatformFactory;
+    private readonly IAdvertisingFactory _advertisingFactory;
+    private readonly IRegionFactory _regionFactory;
+    private readonly IDateTimeHelper _dateTimeHelper;
+    public AdvertisingRegionFileParser(IAdvertisingPlatformFactory advertisingPlatformFactory, IDateTimeHelper dateTimeHelper)
+    {
+        _advertisingPlatformFactory = advertisingPlatformFactory;
+        _dateTimeHelper = dateTimeHelper;
+    }
+
+    public IReadOnlyCollection<AdvertisingPlatformEntity> Parse(string fileContent)
     {
         
         var platformsDictionary = new Dictionary<string, HashSet<string>>();
@@ -31,22 +43,25 @@ public class AdvertisingRegionFileParser : IAdvertisingRegionFileParser
         foreach (var location in regions)
         {
             if (!platforms.ContainsKey(location))
-                platforms[location] = new HashSet<string>();
+                platforms[location] = [];
             if (!platforms[location].Contains(platform))
                 platforms[location].Add(platform);
         }
     }
 
-    private List<AdvertisingPlatform> BuildRegionHierarchy(Dictionary<string, HashSet<string>> regionPlatforms)
+    private List<AdvertisingPlatformEntity> BuildRegionHierarchy(Dictionary<string, HashSet<string>> regionPlatforms)
     {
-        var platforms = new List<AdvertisingPlatform>();
+        var platforms = new List<AdvertisingPlatformEntity>();
         
         foreach (var region in regionPlatforms.Keys)
         {
-            platforms.Add(new AdvertisingPlatform
+            platforms.Add(new AdvertisingPlatformEntity
             {
-                Region = region,
-                Platforms = GetPlatformsForRegionHierarchy(region, regionPlatforms)
+                Region = new RegionEntity() {Name = region},
+                Platform = new AdvertisingEntity() {
+                    PlatformNames = GetPlatformsForRegionHierarchy(region, regionPlatforms), 
+                    PostedAt = _dateTimeHelper.UtcNow,
+                } 
             });
         }
         
@@ -56,7 +71,7 @@ public class AdvertisingRegionFileParser : IAdvertisingRegionFileParser
     private HashSet<string> GetPlatformsForRegionHierarchy(string region, Dictionary<string, HashSet<string>> regionPlatforms)
     {
         var currentRegion = region;
-        var platformsForLocation = new HashSet<string>();
+        HashSet<string> platformsForLocation = [];
         
         while (!string.IsNullOrEmpty(currentRegion))
         {

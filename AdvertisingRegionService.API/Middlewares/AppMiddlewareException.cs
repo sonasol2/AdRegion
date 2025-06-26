@@ -12,11 +12,13 @@ namespace AdvertisingRegionService.API.Middlewares
     {
         private readonly IWebHostEnvironment _environment;
         private readonly RequestDelegate _next;
+        private readonly ILogger<AppMiddlewareException> _logger;
 
-        public AppMiddlewareException(RequestDelegate next, IWebHostEnvironment environment)
+        public AppMiddlewareException(RequestDelegate next, IWebHostEnvironment environment, ILogger<AppMiddlewareException> logger)
         {
             _next = next;
             _environment = environment;
+            _logger = logger;
         }
 
         public async Task InvokeAsync(HttpContext context)
@@ -66,10 +68,11 @@ namespace AdvertisingRegionService.API.Middlewares
 
             if (!_environment.IsProduction())
                 resultObject.Detail = exp.FullMessage();
-
+            
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)code;
             string jsonString = JsonConvert.SerializeObject(resultObject); // Сериализация в JSON
+            _logger.LogError(exp, exp.Message);
             await context.Response.WriteAsync(jsonString);
         }
     }

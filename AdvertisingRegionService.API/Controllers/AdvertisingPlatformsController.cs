@@ -1,6 +1,6 @@
-using AdvertisingRegionService.API.Interfaces;
-using AdvertisingRegionService.Domain.Constants;
-using AdvertisingRegionService.Domain.Interfaces;
+using AdvertisingRegionService.API.Models.Requests;
+using AdvertisingRegionService.API.Services;
+using AdvertisingRegionService.Domain.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdvertisingRegionService.API.Controllers;
@@ -9,46 +9,33 @@ namespace AdvertisingRegionService.API.Controllers;
 public class AdvertisingPlatformsController : Controller
 {
     private readonly IAdvertisingRegionService _advertisingRegionService;
-    private readonly IValidatorService _validatorService;
-
-    public AdvertisingPlatformsController(IAdvertisingRegionService advertisingRegionService, IValidatorService validatorService)
+    
+    public AdvertisingPlatformsController(IAdvertisingRegionService advertisingRegionService)
     {
         _advertisingRegionService = advertisingRegionService;
-        _validatorService = validatorService;
     }
     
     
     [HttpPost]
     [Route("upload")]
-    public async Task<IActionResult> UploadFile(IFormFile? request)
-    {   
-        // var validatorResult = await _validatorService.ValidateAsync(request);
-        // if (!validatorResult.IsValid) return BadRequest(validatorResult.Errors);
-
-        await using var stream = request.OpenReadStream();
+    public async Task<IActionResult> UploadFile(FileUpload request)
+    {
+        await using var stream = request.File.OpenReadStream();
         
-        var result = await _advertisingRegionService.UploadFile(stream); 
-        if (!result.IsSuccessfully)
-            return BadRequest(result.Error);
+        await _advertisingRegionService.UploadFile(stream); 
         
-        return Ok(LocalizationConstants.SuccessMessage);
+        return Ok();
     }
 
-    
     [HttpGet]
     [Route("search")]
-    public IActionResult GetPlatformByLocation(string? searchRequest)
+    public IActionResult SearchPlatform([FromQuery]SearchRequest searchRequest)
     {
-        var validateResult = _validatorService.ValidateAsync(searchRequest);
-        if(!validateResult.Result.IsValid) return BadRequest(validateResult.Result.Errors);
+        var searchPredicates = PredicateSearchFactory.CreateSearchPredicates(searchRequest);
+        var result = _advertisingRegionService.SearchPlatform(searchPredicates);
         
-        var result = _advertisingRegionService.GetPlatformByLocation(searchRequest);
+        var searchResponse = Mapper.MapSearchResponse(result);
         
-        if (!result.IsSuccessfully) return BadRequest(result.Error);
-
-        if (result.Result.Count == 0)
-            return BadRequest(LocalizationConstants.NotFoundMessage);
-        
-        return Ok(result.Result);
+        return Ok(searchResponse);
     }
 }

@@ -1,22 +1,23 @@
+using AdvertisingRegionService.API.Models.Requests;
 using AdvertisingRegionService.Domain.Constants;
 using FluentValidation;
 
 namespace AdvertisingRegionService.API.Validators;
 
-public class FormFileValidator : AbstractValidator<IFormFile>
+public class FormFileValidator : AbstractValidator<FileUpload>
 {
     public FormFileValidator()
     {
-        RuleFor(x => x.FileName)
-            .NotEmpty()
-            .WithMessage(LocalizationConstants.InvalidFileNameMessage);
-        
-        RuleFor(x => Path.GetExtension(x.FileName).ToLower())
-            .Must(ext => ValidationConstants.AllowedExtensions.Contains(ext))
-            .WithMessage(LocalizationConstants.InvalidFileExtensionMessage);
-        
-        RuleFor(x => x.Length)
+        RuleFor(f => f.File)
+            .NotNull().WithMessage(LocalizationConstants.NullModelMessage)
+            .NotEmpty().WithMessage(LocalizationConstants.EmptyObjectMessage);
+
+        RuleFor(f => f.File.Length)
             .GreaterThan(0)
             .WithMessage(LocalizationConstants.EmptyObjectMessage);
+        
+        RuleFor(x => Path.GetExtension(x.File.FileName!).ToLower())
+            .Must(ext => ValidationConstants.AllowedExtensions.Contains(ext))
+            .WithMessage(LocalizationConstants.InvalidFileExtensionMessage);
     }
 }

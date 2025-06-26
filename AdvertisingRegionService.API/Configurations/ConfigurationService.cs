@@ -1,12 +1,13 @@
-using AdvertisingRegionService.API.Interfaces;
-using AdvertisingRegionService.API.Validators;
+using AdvertisingRegionService.API.Middlewares;
 using AdvertisingRegionService.DAL;
-using AdvertisingRegionService.DAL.Interfaces;
-using AdvertisingRegionService.DAL.Models;
+using AdvertisingRegionService.DAL.Abstractions;
 using AdvertisingRegionService.DAL.Repositories;
-using AdvertisingRegionService.Domain.Interfaces;
+using AdvertisingRegionService.Domain.Abstractions;
+using AdvertisingRegionService.Domain.Factories;
 using AdvertisingRegionService.Domain.Parsers;
+using AdvertisingRegionService.Domain.Services;
 using FluentValidation;
+using FluentValidation.AspNetCore;
 
 namespace AdvertisingRegionService.API.Configurations;
 
@@ -16,27 +17,33 @@ public static class ConfigurationService
     {
         services.AddEndpointsApiExplorer();
 
-        services.AddSingleton<CacheContext>();
+        services.AddExceptionHandler<GlobalExceptionHandler>();
+        services.AddProblemDetails();
+        
+        services.AddSingleton(typeof(CacheContext<>));
         
         services.AddSwaggerGen();
-        
+
         AddBusinessServices(services);
         AddControllersConfiguration(services);
         AddValidators(services);
-        AddRepositories(services);
+        AddRepositories(services);        
+        AddFactories(services);
     }
     
 
     private static void AddBusinessServices(this IServiceCollection services)
     {
-        services.AddScoped<IAdvertisingRegionService, Domain.Services.AdvertisingRegionService>();
+        services.AddSingleton<IAdvertisingRegionService, Domain.Services.AdvertisingRegionService>();
         services.AddSingleton<IAdvertisingRegionFileParser, AdvertisingRegionFileParser>();
+        services.AddSingleton<IDateTimeHelper, DateTimeHelper>();
     }
 
     private static void AddValidators(this IServiceCollection services)
     {
         services.AddValidatorsFromAssembly(typeof(Program).Assembly); //TODO: Обговорить автоматическую валидацию в контроллерах и как реализовать
-        services.AddTransient<IValidatorService, ValidatorService>();
+        services.AddFluentValidationAutoValidation();
+        services.AddFluentValidationClientsideAdapters();
     }
     
     private static void AddControllersConfiguration(this IServiceCollection services)
@@ -46,7 +53,15 @@ public static class ConfigurationService
 
     private static void AddRepositories(this IServiceCollection services)
     {
-        services.AddScoped<IRepository<AdvertisingPlatform>, CacheRepository>();
-        services.AddScoped<ICacheRepository, CacheRepository>();
+        services.AddSingleton<IAdvertisingPlatformRepository, AdvertisingPlatformRepository>();
+        services.AddSingleton<IRegionRepository, RegionRepository>();
+        services.AddSingleton<IAdvertisingRepository, AdvertisingRepository>();
+    }
+
+    private static void AddFactories(this IServiceCollection services)
+    {
+        services.AddSingleton<IRegionFactory, RegionFactory>();
+        services.AddSingleton<IAdvertisingFactory, AdvertisingFactory>();
+        services.AddSingleton<IAdvertisingPlatformFactory, AdvertisingPlatformFactory>();
     }
 }

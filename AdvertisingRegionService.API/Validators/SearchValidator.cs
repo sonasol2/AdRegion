@@ -1,20 +1,20 @@
+using AdvertisingRegionService.API.Models.Requests;
 using AdvertisingRegionService.Domain.Constants;
 using FluentValidation;
 
 namespace AdvertisingRegionService.API.Validators;
 
-public class SearchValidator : AbstractValidator<string>
+public class SearchValidator : AbstractValidator<SearchRequest>
 {
     public SearchValidator()
     {
         RuleFor(s => s)
-            .NotEmpty()
-            .WithMessage(LocalizationConstants.EmptySearchStringMessage);
+            .NotNull().WithMessage(LocalizationConstants.NullModelMessage);
         
-        RuleFor(s => s.Length)
-            .GreaterThan(0)
-            .WithMessage(LocalizationConstants.TooLongSearchStringMessage)
-            .LessThan(ValidationConstants.MaxSearchLength)
-            .WithMessage(LocalizationConstants.TooShortSearchStringMessage);
+        RuleFor(s => s.SearchText)
+            .NotNull().WithMessage(LocalizationConstants.NullModelMessage)
+            .NotEmpty().WithMessage(LocalizationConstants.EmptySearchStringMessage)
+            .Length(ValidationConstants.MinSearchLength, ValidationConstants.MaxSearchLength)
+            .WithMessage(ValidationConstants.MaxMinSearchStringLengthMessage);
     }
 }

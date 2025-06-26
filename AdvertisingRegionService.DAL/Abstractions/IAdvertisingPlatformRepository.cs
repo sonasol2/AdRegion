@@ -1,10 +1,10 @@
 using AdvertisingRegionService.DAL.Models;
 
-namespace AdvertisingRegionService.DAL.Interfaces;
+namespace AdvertisingRegionService.DAL.Abstractions;
 /// <summary>
 /// Interface for working with the cache of data about advertising platforms.
 /// </summary>
-public interface ICacheRepository : IRepository<AdvertisingPlatform>
+public interface IAdvertisingPlatformRepository : IRepository<AdvertisingPlatformEntity>
 {
     /// <summary>
     /// Clear all advertising platform data cache
@@ -14,7 +14,7 @@ public interface ICacheRepository : IRepository<AdvertisingPlatform>
     /// Gets a list advertising platform available for specified location.
     /// Takes into account the hierarchy of regions.
     /// </summary>
-    /// <param name="location">Location(region) for which platforms are requested </param>
+    /// <param name="region">Location(region) for which platforms are requested </param>
     /// <returns>Unique advertising platform name</returns>
-    HashSet<string> GetAdvertisingPlatformByLocation(string location);
+    HashSet<string> GetByRegion(string region);
 }
