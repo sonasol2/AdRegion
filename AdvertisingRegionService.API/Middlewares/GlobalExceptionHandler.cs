@@ -35,8 +35,12 @@ public class GlobalExceptionHandler : IExceptionHandler
                 response.StatusCode = HttpStatusCode.Unauthorized;
                 response.Message = exception.Message;
                 break;
-            case BusinessException: // bisnes exception 400  и анавторайзн 300
+            case BusinessException:
                 response.StatusCode = HttpStatusCode.BadRequest;
+                response.Message = exception.Message;
+                break;
+            case SystemException:
+                response.StatusCode = HttpStatusCode.InternalServerError;
                 response.Message = exception.Message;
                 break;
             default:
