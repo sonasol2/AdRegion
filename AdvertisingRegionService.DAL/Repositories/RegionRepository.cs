@@ -12,8 +12,4 @@ public class RegionRepository : Repository<RegionEntity>, IRegionRepository
         _context = context;
     }
     
-    public override void AddRange(IEnumerable<RegionEntity> entities)
-    {
-        throw new NotImplementedException();
-    }
 }

@@ -9,8 +9,4 @@ public class AdvertisingRepository : Repository<AdvertisingEntity>, IAdvertising
     {
     }
     
-    public override void AddRange(IEnumerable<AdvertisingEntity> entities)
-    {
-        throw new NotImplementedException();
-    }
 }

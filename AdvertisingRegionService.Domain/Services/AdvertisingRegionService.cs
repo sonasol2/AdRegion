@@ -29,7 +29,7 @@ public class AdvertisingRegionService : IAdvertisingRegionService
         var advertisingPlatforms = _advertisingRegionFileParser.Parse(content);
         
         if (!advertisingPlatforms.Any())
-            throw new AdvertisingFileProcessingException();
+            throw new BusinessException();
         
         UpdateCache(advertisingPlatforms);
         

@@ -31,20 +31,12 @@ public class GlobalExceptionHandler : IExceptionHandler
 
         switch (exception)
         {
-            case ArgumentNullException:
-                response.StatusCode = HttpStatusCode.InternalServerError;
+            case UnauthorizedAccessException:
+                response.StatusCode = HttpStatusCode.Unauthorized;
                 response.Message = exception.Message;
                 break;
-            case TimeoutException:
-                response.StatusCode = HttpStatusCode.RequestTimeout;
-                response.Message = exception.Message;
-                break;
-            case AdvertisingFileProcessingException:
-                response.StatusCode = HttpStatusCode.InternalServerError;
-                response.Message = exception.Message;
-                break;
-            case SearchException:
-                response.StatusCode = HttpStatusCode.InternalServerError;
+            case BusinessException: // bisnes exception 400  и анавторайзн 300
+                response.StatusCode = HttpStatusCode.BadRequest;
                 response.Message = exception.Message;
                 break;
             default:
