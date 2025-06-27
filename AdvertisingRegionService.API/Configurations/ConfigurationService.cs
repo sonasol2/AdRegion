@@ -4,6 +4,8 @@ using AdvertisingRegionService.DAL.Abstractions;
 using AdvertisingRegionService.DAL.Repositories;
 using AdvertisingRegionService.Domain.Abstractions;
 using AdvertisingRegionService.Domain.Factories;
+using AdvertisingRegionService.Domain.Models;
+using AdvertisingRegionService.Domain.Models.Interfaces;
 using AdvertisingRegionService.Domain.Parsers;
 using AdvertisingRegionService.Domain.Services;
 using FluentValidation;
