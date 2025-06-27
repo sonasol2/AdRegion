@@ -1,6 +1,4 @@
 
-using AdvertisingRegionService.API.Middlewares;
-
 namespace AdvertisingRegionService.API.Configurations;
 
 public static class ConfigurationApplication
@@ -11,8 +9,6 @@ public static class ConfigurationApplication
         
         app.UseSwagger();
         app.UseSwaggerUI();
-        
-        app.UseMiddleware<RequestResponseLoggingMiddleware>();
         
         app.MapControllers();
     }
